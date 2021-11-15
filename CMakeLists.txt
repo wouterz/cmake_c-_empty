@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.5)
+project(json_handling)
+
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+file(GLOB executables_src CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+foreach(executables_path ${executables_src})
+  get_filename_component(testsourcefile "${executables_path}" NAME)
+  string(REPLACE ".cpp" "" executable_name ${testsourcefile})
+
+  add_executable(${executable_name} "src/${testsourcefile}")
+  target_include_directories(${executable_name} PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+endforeach(executables_path ${executables_src})
